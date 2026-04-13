@@ -185,20 +185,50 @@
  */
 
 // import mongoose
+import mongoose from "mongoose";
 
 // establish connection
+mongoose.connect("mongodb+srv://Bana_Jaber:Artsharingpage-782004@cluster0.i6v4sxd.mongodb.net/TestDB")
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch((err) => console.log("❌ Error: ", err));
 
 
 // define schema
+const studentSchema = new mongoose.Schema({
+   name: String,
+   age: Number,
+   major: String
+});
 
+const Student = mongoose.model("Student", studentSchema);
 
 // create document
-
+async function createStudents() {
+   await Student.insertMany([
+      { name: "Ali", age: 21, major: "CS" },
+      { name: "Sara", age: 23, major: "SE" }
+   ]);
+   console.log("✅ Inserted");
+}
+createStudents();
 
 // read document
-
+async function readStudents() {
+   const all = await Student.find();
+   console.log(all);
+}
+readStudents();
 
 // update document
-
+async function updateStudent() {
+   await Student.updateOne({ name: "Ali" }, { age: 22 });
+   console.log("✅ Updated Ali");
+}
+updateStudent();
 
 // delete document
+async function deleteStudent() {
+   await Student.deleteOne({ name: "Sara" });
+   console.log("✅ Deleted Sara");
+}
+deleteStudent();
